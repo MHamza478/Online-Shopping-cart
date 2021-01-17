@@ -1,0 +1,29 @@
+<% if @cart_items.empty? %>
+	<h2 class="text-center mt-5">No Item added in Cart</h2>
+<% else %>
+	<h2 class="text-center mb-5">Products Added By You!</h2>
+	<div class="row">
+		<% @total_price = 0 %>
+		<% @cart_items.each do |item| %>
+			<% @total_price = @total_price + item['quantity'].to_i*item['unit_price'].to_i %>
+			<div class="col-sm-3 mb-5">
+				<div class="card shadow">
+					<img class="card-img-top" style="height: 150px" src="<%= item['image_url'] %>">
+					<div class="card-body text-center">
+            <h5 class="card-title"><%=  item['name'] %></h5>
+            <p class="card-text">Price: <%= item['unit_price'].to_i %>$</p>
+            <p class="card-text">Quantity: <%= item['quantity'] %></p>
+					</div>
+					<div class="card-body text-center">
+						<%= link_to "Delete", order_item_path(item['product_id']), method: 'delete', class: 'btn btn-danger' %>
+					</div>
+				</div>
+			</div>
+		<% end %>
+	</div>
+  <div class="mt-5 mb-5">
+    <h3>Total price is : <%= @total_price %>$</h3>
+  </div>
+	<%= link_to "Clear Cart", carts_path, method: 'delete', class: 'mb-5 btn btn-danger ml-5' %>
+	<%= link_to "Order Now", order_path, method: :post, class: 'mb-5 btn btn-success ml-5' %>
+<% end %>
